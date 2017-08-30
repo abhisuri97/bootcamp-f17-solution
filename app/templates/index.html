@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>Maze Runner</title>
+  </head>
+  <body>
+    <h1>Hi there</h1>
+    <button id="movement">left</button>
+    <button id="movement">right</button>
+    <button id="movement">up</button>
+    <button id="movement">down</button>
+    <div id="prevCoors">
+      {% for c in coors %}
+      <p>{{c.x}},{{c.y}},{{c.dir}} - This move is {{c.valid}}</p>
+      {% endfor %}
+    </div>
+
+
+  </body>
+
+  <script src="{{ url_for('static', filename='scripts/jquery-3.2.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+
+</html>
