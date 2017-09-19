@@ -22,9 +22,8 @@ def index():
 @app.route("/walk/<x>/<y>/<dir>", methods=["POST"])
 def walk(x, y, dir):
     query = requests.get(app.config['QUERY_URL'] +
-                         '/{}/{}/{}'.format(x, y, DIRECTIONS[dir]))
+                         '/{}/{}/{}'.format(x, y, dir))
     result = json.loads(query.content)
-    print(result)
     new_coordinate = Coordinate(x, y, dir, result['validMove'])
     db.session.add(new_coordinate)
     db.session.commit()

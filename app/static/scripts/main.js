@@ -2,7 +2,7 @@ $(document).ready(function() {
 
   var x = 0;
   var y = 0;
-  var dir = -1;
+  var dir = '';
 
   var updateXandYFromTemplate = function() {
     var p = $('#prevCoors p:first-child').first()
@@ -11,7 +11,6 @@ $(document).ready(function() {
       var arr = text.split(',');
       x = arr[0];
       y = arr[1];
-      console.log('updated x and y');
     }
   }
 
