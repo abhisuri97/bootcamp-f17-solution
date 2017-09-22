@@ -676,5 +676,42 @@ python manage.py runserver
 
 ## Section 7: Hosting
 
+While sending a link to your friends with `http://localhost:5000` makes you look like a cool hacker, you'll soon realize that this effort to gain notoriety will backfire against you as people get page not available errors...because after all, not many people are running this exact same application on port 5000 of their computer (much to Hack4Impact's dismay). Let's host this on heroku so you have something to actually share. 
 
+Some housekeeping first, run `pip install gunicorn` then run
+
+```
+pip freeze > requirements.txt
+```
+
+This command will save all the requirements to the `requirements.txt` file. You can actually just run `pip install requirements.txt` to install these requirements if you ever need to again. 
+
+Also create a file called `Procfile` and paste the following in
+
+```
+web: gunicorn manage:app
+```
+
+You don't need to worry about the details, but heroku looks for a `Procfile` when instantiating an app. This basically means create a `web` instance that runs `gunicorn` (a web server handler) with the app in `manage.py`
+
+Next, [create a heroku account on Heroku's website](http://heroku.com), [set up the CLI](https://devcenter.heroku.com/articles/heroku-cli), and log in. Go back to your project directory and run 
+
+```
+$ heroku create app-name-here
+```
+
+Then create a `.gitignore` file and paste the following in
+
+```
+venv
+app.db
+__pycache__
+*.pyc
+.DS_Store
+```
+This will just specify files for git to ignore while it is tracking changes. 
+
+Do `git add .gitignore`, `git commit -m "added gitignore"`. Next `git add .` which will add all the files not in git ignore `git commit -m "initialized app"`. 
+
+Lastly run `git push heroku master` and wait for everything to settle down. When you 
 
