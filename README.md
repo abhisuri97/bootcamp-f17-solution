@@ -673,3 +673,71 @@ To run the app from scratch run:
 python manage.py recreate_db
 python manage.py runserver
 ```
+
+## Section 7: Hosting
+
+While sending a link to your friends with `http://localhost:5000` makes you look like a cool hacker, you'll soon realize that this effort to gain notoriety will backfire against you as people get page not available errors...because after all, not many people are running this exact same application on port 5000 of their computer (much to Hack4Impact's dismay). Let's host this on heroku so you have something to actually share. 
+
+Some housekeeping first, run `pip install gunicorn` and `pip install psycopg2` then run
+
+```
+pip freeze > requirements.txt
+```
+
+This command will save all the requirements to the `requirements.txt` file. You can actually just run `pip install requirements.txt` to install these requirements if you ever need to again. 
+
+Also create a file called `Procfile` and paste the following in
+
+```
+web: gunicorn manage:app
+```
+
+You don't need to worry about the details, but heroku looks for a `Procfile` when instantiating an app. This basically means create a `web` instance that runs `gunicorn` (a web server handler) with the app in `manage.py`
+
+Next, [create a heroku account on Heroku's website](http://heroku.com), [set up the CLI](https://devcenter.heroku.com/articles/heroku-cli), and log in. Go back to your project directory and run 
+
+```
+$ heroku create app-name-here
+```
+
+Then create a `.gitignore` file and paste the following in
+
+```
+venv
+app.db
+__pycache__
+*.pyc
+.DS_Store
+```
+This will just specify files for git to ignore while it is tracking changes. 
+
+Next, we need to edit our configuration file. Open up config.py and replace the content with the following: 
+
+```python
+import os
+
+DEBUG = True
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+if os.environ.get('DATABASE_URL'):
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+else:
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+SECRET_KEY = 'secretshhhh'
+QUERY_URL = 'http://h4ibootcamp2k17.herokuapp.com'
+```
+
+The new parts include the `os.environ.get...` lines. Heroku provides a Database URL in an environment variable called `DATABASE_URL`. If this is set in the environment the app is running in, we should use that URL instead of the one we create (well...heroku doesn't allow you to create files while the app is running). 
+
+Do `git add .gitignore`, `git commit -m "added gitignore"`. Next `git add .` which will add all the files not in git ignore `git commit -m "initialized app"`. 
+
+Lastly run `git push heroku master` and wait for everything to settle down. You should also run `heroku addons:create heroku-postgresql:hobby-dev` which will tell Heroku that your application is using a PostgresQL database (and in turn heroku will provide a `DATABASE_URL` environment variable).
+
+Finally run `heroku run python manage.py recreate_db` which will run our `recreate_db` Manager command on the heroku instance. 
+
+Visit the page at the Heroku URL and you should be all set.
+
+Congrats, you're done. 
+
