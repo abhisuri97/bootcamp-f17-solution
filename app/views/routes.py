@@ -5,21 +5,13 @@ from app.models.coordinates import Coordinate
 import requests
 import json
 
-DIRECTIONS = {
-    'left': 0,
-    'up': 1,
-    'right': 2,
-    'down': 3
-}
-
-
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def index():
-    coors = Coordinate.query.order_by(Coordinate.id.desc())
+    coors = Coordinate.query.order_by(Coordinate.id.desc()).all()
     return render_template('index.html', coors=coors)
 
 
-@app.route("/walk/<x>/<y>/<dir>", methods=["POST"])
+@app.route("/walk/<x>/<y>/<dir>")
 def walk(x, y, dir):
     query = requests.get(app.config['QUERY_URL'] +
                          '/{}/{}/{}'.format(x, y, dir))

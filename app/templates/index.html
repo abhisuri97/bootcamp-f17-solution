@@ -10,7 +10,7 @@
     <button id="movement">down</button>
     <div id="prevCoors">
       {% for c in coors %}
-      <p>{{c.x}},{{c.y}},{{c.dir}} - This move is {{c.valid}}</p>
+      <p>You moved from {{c.x}},{{c.y}} in the direction {{c.dir}} - This move is {{c.valid}}</p>
       {% endfor %}
     </div>
 
@@ -19,5 +19,9 @@
 
   <script src="{{ url_for('static', filename='scripts/jquery-3.2.1.min.js') }}"></script>
   <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+  <script>
+    window.x = {{ coors[0].x if coors[0] else 0 }}
+    window.y = {{ coors[0].y if coors[0] else 0 }}
+  </script>
 
 </html>

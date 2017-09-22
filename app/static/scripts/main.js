@@ -1,20 +1,8 @@
 $(document).ready(function() {
 
-  var x = 0;
-  var y = 0;
+  var x = window.x;
+  var y = window.y
   var dir = '';
-
-  var updateXandYFromTemplate = function() {
-    var p = $('#prevCoors p:first-child').first()
-    if (p.length > 0) {
-      var text = p.text()
-      var arr = text.split(',');
-      x = arr[0];
-      y = arr[1];
-    }
-  }
-
-  updateXandYFromTemplate();
 
   $('button#movement').on('click', function(e) {
     e.preventDefault();
@@ -24,18 +12,16 @@ $(document).ready(function() {
 
   var sendRequest = function(x,y,dir) {
     $.ajax({
-      type: "POST",
+      type: "GET",
       url: "/walk/" + x + "/" + y + "/" + dir,
       data: "",
-      success: function(result, err) {
-        console.log(result)
+      success: function(result) {
         handleResult(result, dir)
       },
     });
   }
 
   var handleResult = function(result, dir) {
-    console.log(dir)
     if (result.validMove === true) {
       switch (dir) {
         case 'left':
@@ -53,7 +39,8 @@ $(document).ready(function() {
         default:
       }
     }
-    $('#prevCoors').prepend('<p>' + x + ',' + y + ',' + dir + ' - This move is ' + result.validMove + '</p>');
+    $('#prevCoors').prepend('<p> You moved from ' + x + ',' + y + ' in the direction ' + 
+        dir + ' - This move is ' + result.validMove + '</p>');
 
     if (result.data.length > 0) {
       $('#prevCoors').prepend('<a href="' + result.data + '"">Click here</a>');
