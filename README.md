@@ -678,7 +678,7 @@ python manage.py runserver
 
 While sending a link to your friends with `http://localhost:5000` makes you look like a cool hacker, you'll soon realize that this effort to gain notoriety will backfire against you as people get page not available errors...because after all, not many people are running this exact same application on port 5000 of their computer (much to Hack4Impact's dismay). Let's host this on heroku so you have something to actually share. 
 
-Some housekeeping first, run `pip install gunicorn` then run
+Some housekeeping first, run `pip install gunicorn` and `pip install psycopg2` then run
 
 ```
 pip freeze > requirements.txt
