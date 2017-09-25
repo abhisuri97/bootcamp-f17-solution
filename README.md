@@ -1,4 +1,4 @@
-# The "Ideal Solution"
+# The Bootcamp Guide
 
 ## Preface
 
